@@ -146,4 +146,3 @@ This system helps organizations to:
 - Early risk detection reduces hiring costs.
 - Degree specialization impacts placement success.
 - Targeted training can improve acceptance rates.
-
