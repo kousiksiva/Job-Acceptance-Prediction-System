@@ -12,7 +12,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS - OPTIMIZED FOR NORMAL SCREEN SIZE
+# Custom CSS - OPTIMIZED FOR SMALLER SCREEN SIZE
 st.markdown("""
     <style>
     /* 1. App Background - Dark */
@@ -20,89 +20,95 @@ st.markdown("""
         background-color: #0E1117;
     }
 
-    /* 2. Main Title Font - NORMAL SIZE */
+    /* 2. Main Title Font - SMALLER SIZE */
     .main-title {
-        font-size: 2.5rem !important; /* Reduced from 3.5 */
+        font-size: 2.0rem !important; /* Reduced */
         font-weight: 800 !important;
         color: #FFFFFF !important;
         text-align: center;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
     }
 
-    /* 3. Sub-text Font - NORMAL SIZE */
+    /* 3. Sub-text Font - SMALLER SIZE */
     .sub-text {
-        font-size: 1.0rem !important; /* Reduced from 1.4 */
-        line-height: 1.5;
+        font-size: 0.9rem !important; /* Reduced */
+        line-height: 1.4;
         text-align: center;
         color: #D1D5DB !important;
-        margin-bottom: 30px;
-        padding: 0 100px;
+        margin-bottom: 20px;
+        padding: 0 50px;
     }
 
-    /* 4. Dynamic Context Text (Top of sections) - NORMAL SIZE */
+    /* 4. Dynamic Context Text - SMALLER SIZE */
     .dynamic-text {
-        font-size: 1.05rem; /* Reduced from 1.3 */
+        font-size: 0.9rem; /* Reduced */
         color: #9CA3AF;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
         font-style: italic;
         border-left: 3px solid #3B82F6;
-        padding-left: 15px;
+        padding-left: 10px;
     }
 
-    /* 5. Chart Explanation Text (Bottom of charts) */
+    /* 5. Chart Explanation Text - SMALLER SIZE */
     .chart-explanation {
-        font-size: 0.9rem; /* Small, crisp text */
+        font-size: 0.8rem; /* Reduced */
         color: #D1D5DB; 
-        margin-top: 10px;
+        margin-top: 5px;
         background-color: #1F2937;
-        padding: 12px;
+        padding: 10px;
         border-radius: 6px;
         border-top: 2px solid #F59E0B;
     }
 
-    /* 6. KPI Card Style - COMPACT & WHITE */
+    /* 6. KPI Card Style - COMPACT */
     .kpi-card {
         background-color: #FFFFFF;
         border-radius: 8px;
-        padding: 15px; /* Reduced padding */
+        padding: 10px; /* Reduced */
         text-align: center;
         box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
         margin-bottom: 10px;
         border-top: 4px solid #2563EB; 
     }
     .kpi-value {
-        font-size: 1.8rem !important; /* Reduced from 2.2 */
+        font-size: 1.5rem !important; /* Reduced */
         font-weight: 800;
         color: #000000 !important;
         margin: 0;
     }
     .kpi-label {
-        font-size: 0.9rem !important;
+        font-size: 0.8rem !important; /* Reduced */
         font-weight: 600;
         color: #4B5563;
         margin: 0;
     }
 
-    /* 7. Section Headers - NORMAL SIZE */
+    /* 7. Section Headers - SMALLER SIZE */
     .section-header {
-        font-size: 1.8rem !important; /* Reduced from 2.2 */
+        font-size: 1.5rem !important; /* Reduced */
         font-weight: 700;
         color: #FFFFFF !important;
         border-bottom: 1px solid #374151;
-        padding-bottom: 8px;
-        margin-top: 40px;
-        margin-bottom: 15px;
+        padding-bottom: 5px;
+        margin-top: 30px;
+        margin-bottom: 10px;
     }
     
     /* 8. Insight Box Styling */
     .insight-box {
         background-color: #1F2937;
-        padding: 15px;
+        padding: 10px;
         border-radius: 6px;
         border-left: 4px solid #10B981;
         margin-bottom: 10px;
         color: #FFFFFF;
-        font-size: 0.95rem;
+        font-size: 0.85rem;
+    }
+    
+    /* Fix for H4 headers provided by Streamlit */
+    h4 {
+        font-size: 1.1rem !important;
+        padding-top: 0px !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -136,40 +142,35 @@ target_col = [c for c in df.columns if "place" in c.lower() or "status" in c.low
 df["status_numeric"] = df[target_col].map({"Placed": 1, "Not Placed": 0, "Yes": 1, "No": 0})
 
 # -----------------------------
-# 3. SIDEBAR
+# 3. SIDEBAR (CHANGED TO DROPDOWNS)
 # -----------------------------
 st.sidebar.markdown("<h2 style='text-align: center;'>⚙️ Control Panel</h2>", unsafe_allow_html=True)
-# UPDATED TEXT HERE
 st.sidebar.info("Adjust the filters below to customize the analysis.")
 
 with st.sidebar.expander("📂 Filter Options", expanded=True):
-    # 1. Experience
-    experience_filter = st.multiselect(
-        "👔 1. Experience Level",
-        options=sorted(df["experience_category"].unique()),
-        default=sorted(df["experience_category"].unique())
-    )
+    # 1. Experience (DROPDOWN)
+    exp_options = ["All"] + sorted(df["experience_category"].unique().tolist())
+    experience_filter = st.selectbox("👔 1. Experience Level", options=exp_options)
     
-    # 2. Skill
-    skill_filter = st.multiselect(
-        "🛠 2. Skill Level",
-        options=sorted(df["skill_level"].unique()),
-        default=sorted(df["skill_level"].unique())
-    )
+    # 2. Skill (DROPDOWN)
+    skill_options = ["All"] + sorted(df["skill_level"].unique().tolist())
+    skill_filter = st.selectbox("🛠 2. Skill Level", options=skill_options)
 
-    # 3. Degree
-    degree_filter = st.multiselect(
-        "🎓 3. Degree Specialization",
-        options=sorted(df["degree_specialization"].unique()),
-        default=sorted(df["degree_specialization"].unique())
-    )
+    # 3. Degree (DROPDOWN)
+    deg_options = ["All"] + sorted(df["degree_specialization"].unique().tolist())
+    degree_filter = st.selectbox("🎓 3. Degree Specialization", options=deg_options)
 
-# Apply Filters
-filtered_df = df[
-    (df["degree_specialization"].isin(degree_filter)) &
-    (df["experience_category"].isin(experience_filter)) &
-    (df["skill_level"].isin(skill_filter))
-]
+# Apply Filters Logic for Dropdowns
+filtered_df = df.copy()
+
+if experience_filter != "All":
+    filtered_df = filtered_df[filtered_df["experience_category"] == experience_filter]
+
+if skill_filter != "All":
+    filtered_df = filtered_df[filtered_df["skill_level"] == skill_filter]
+
+if degree_filter != "All":
+    filtered_df = filtered_df[filtered_df["degree_specialization"] == degree_filter]
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("### ℹ️ About")
@@ -255,8 +256,8 @@ def set_white_chart_style(fig, ax):
     ax.set_facecolor('white')
     ax.xaxis.label.set_color('black')
     ax.yaxis.label.set_color('black')
-    ax.tick_params(axis='x', colors='black', labelsize=9)
-    ax.tick_params(axis='y', colors='black', labelsize=9)
+    ax.tick_params(axis='x', colors='black', labelsize=8)
+    ax.tick_params(axis='y', colors='black', labelsize=8)
     for spine in ax.spines.values():
         spine.set_edgecolor('#cccccc')
     return fig, ax
@@ -266,7 +267,7 @@ col_left, col_right = st.columns([1, 1]) # 50/50 split for even sizing
 with col_left:
     st.markdown("#### 🥧 Placement Overview")
     if total_candidates > 0:
-        fig, ax = plt.subplots(figsize=(5, 4)) # Fixed Size
+        fig, ax = plt.subplots(figsize=(4, 3)) # FIXED SIZE
         sns.countplot(data=filtered_df, x=target_col, palette="viridis", ax=ax)
         set_white_chart_style(fig, ax)
         st.pyplot(fig, use_container_width=True)
@@ -288,7 +289,7 @@ with col_left:
 with col_right:
     st.markdown("#### 🔗 Score Correlation Map") # Renamed for clarity
     if total_candidates > 0:
-        fig, ax = plt.subplots(figsize=(5, 4)) # Fixed Size
+        fig, ax = plt.subplots(figsize=(4, 3)) # FIXED SIZE
         
         # FIXED: Only select relevant numeric columns for clarity
         relevant_cols = ['technical_score', 'communication_score', 'aptitude_score', 'status_numeric']
@@ -297,15 +298,15 @@ with col_right:
         sns.heatmap(
             corr_matrix,
             annot=True, fmt=".2f", cmap="coolwarm", ax=ax,
-            annot_kws={"size": 10}
+            annot_kws={"size": 8}
         )
         
         # Style
         fig.patch.set_facecolor('white')
-        ax.tick_params(axis='x', colors='black', rotation=45)
-        ax.tick_params(axis='y', colors='black')
+        ax.tick_params(axis='x', colors='black', rotation=45, labelsize=8)
+        ax.tick_params(axis='y', colors='black', labelsize=8)
         cbar = ax.collections[0].colorbar
-        cbar.ax.tick_params(colors='black')
+        cbar.ax.tick_params(colors='black', labelsize=8)
         st.pyplot(fig, use_container_width=True)
 
         # --- DYNAMIC EXPLANATION 2 ---
@@ -337,18 +338,18 @@ st.markdown(f'<div class="dynamic-text">{bg_context}</div>', unsafe_allow_html=T
 b1, b2 = st.columns(2)
 
 with b1:
-    st.markdown("#### Degree Specialization vs Status")
+    st.markdown("#### 🎓 Degree Specialization vs Status")
     if total_candidates > 0:
-        fig, ax = plt.subplots(figsize=(5, 4)) # Fixed Size
+        fig, ax = plt.subplots(figsize=(4, 3)) # FIXED SIZE
         sns.countplot(data=filtered_df, x="degree_specialization", hue=target_col, palette="Set2", ax=ax)
         plt.xticks(rotation=45)
-        plt.legend(facecolor='white', labelcolor='black', title='')
+        plt.legend(facecolor='white', labelcolor='black', title='', fontsize=8)
         set_white_chart_style(fig, ax)
         st.pyplot(fig, use_container_width=True)
 
         # --- DYNAMIC EXPLANATION 3 ---
         # Find dominant degree
-        dominant_degree = filtered_df['degree_specialization'].mode()[0]
+        dominant_degree = filtered_df['degree_specialization'].mode()[0] if not filtered_df.empty else "N/A"
         
         st.markdown(f"""
         <div class="chart-explanation">
@@ -359,11 +360,11 @@ with b1:
         """, unsafe_allow_html=True)
 
 with b2:
-    st.markdown("#### Experience Level Impact")
+    st.markdown("#### ⏳ Experience Level Impact")
     if total_candidates > 0:
-        fig, ax = plt.subplots(figsize=(5, 4)) # Fixed Size
+        fig, ax = plt.subplots(figsize=(4, 3)) # FIXED SIZE
         sns.countplot(data=filtered_df, x="experience_category", hue=target_col, palette="Set1", ax=ax)
-        plt.legend(facecolor='white', labelcolor='black', title='')
+        plt.legend(facecolor='white', labelcolor='black', title='', fontsize=8)
         set_white_chart_style(fig, ax)
         st.pyplot(fig, use_container_width=True)
 
