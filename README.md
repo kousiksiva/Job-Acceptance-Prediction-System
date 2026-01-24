@@ -128,7 +128,7 @@ This system helps organizations to:
 
 ## 📈 Dashboard Features
 
-**👉 [Click Here to View the Live Dashboard](https://kousiksiva-job-acceptance-prediction-sy-scriptsdashboard-gidvvm.streamlit.app/)**
+**👉 [Click Here to View the Live Dashboard](https://job-acceptance-prediction-system-goeamcsjfphvccpjvojnxm.streamlit.app/)**
 
 - Advanced filters:
   - Experience Category
