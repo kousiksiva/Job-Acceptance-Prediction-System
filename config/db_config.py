@@ -1,12 +1,3 @@
-"""
-Database Configuration File
-Supports MySQL and SQLite
-Used for storing cleaned & processed job acceptance data
-"""
-
-# ===============================
-# MYSQL CONFIGURATION
-# ===============================
 MYSQL_CONFIG = {
     "host": "localhost",
     "user": "root",
@@ -15,12 +6,6 @@ MYSQL_CONFIG = {
     "port": 3306
 }
 
-# ===============================
-# SQLITE CONFIGURATION (OPTIONAL)
-# ===============================
-SQLITE_DB_PATH = "database/job_acceptance.db"
+SQLITE_DB_PATH = "job_acceptance.db"
 
-# ===============================
-# TABLE NAME
-# ===============================
 TABLE_NAME = "job_acceptance"
